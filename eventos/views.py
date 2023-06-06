@@ -3,6 +3,8 @@ import datetime as dt
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from eventos.forms import InscricaoForm
+
 
 def inicio(request):
     eventos = []
@@ -24,3 +26,18 @@ def inicio(request):
         'eventos': eventos,
     }
     return render(request, 'inicio.html', contexto)
+
+
+def inscricao(request):
+    contexto = {
+        'categorias': ['Esportivo', 'Shows', 'Outros'],
+    }
+    if request.method == 'POST':
+        form = InscricaoForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            contexto['sucesso'] = True
+    else:
+        form = InscricaoForm()
+    contexto['form'] = form
+    return render(request, 'inscricao.html', contexto)
