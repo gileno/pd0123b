@@ -3,6 +3,7 @@ import datetime as dt
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from eventos.models import Inscricao
 from eventos.forms import InscricaoForm
 
 
@@ -35,7 +36,7 @@ def inscricao(request):
     if request.method == 'POST':
         form = InscricaoForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
+            form.save()
             contexto['sucesso'] = True
     else:
         form = InscricaoForm()
