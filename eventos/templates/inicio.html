@@ -55,7 +55,7 @@
     <nav class="nav d-flex justify-content-between">
       <a class="p-2 link-secondary" href="#">Todos</a>
       {% for categoria in categorias %}
-      <a class="p-2 link-secondary" href="#">{{ categoria }}</a>
+      <a class="p-2 link-secondary" href="{% url 'categoria' categoria.id %}">{{ categoria }}</a>
       {% endfor %}
     </nav>
   </div>
@@ -76,10 +76,9 @@
     <div class="col-md-6">
       <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">{{ evento.categoria }}</strong>
+          <strong class="d-inline-block mb-2 text-primary">{{ evento.categoria|upper }}</strong>
           <h3 class="mb-0">{{ evento.nome }}</h3>
-          <div class="mb-1 text-muted">{{ evento.data }}</div>
-          <p class="card-text mb-auto">{{ evento.descricao }}</p>
+          <div class="mb-1 text-muted">{{ evento.data|date:'d/m/Y'|default:'Sem data' }}</div>
           <a href="#" class="stretched-link">Ver detalhes</a>
         </div>
         <div class="col-auto d-none d-lg-block">
