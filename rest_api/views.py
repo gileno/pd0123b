@@ -51,3 +51,4 @@ def categorias(request):
         return Response({
             'resultados': resultados
         })
+
