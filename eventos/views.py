@@ -19,7 +19,7 @@ def inicio(request):
 
 def inscricao(request):
     contexto = {
-        'categorias': ['Esportivo', 'Shows', 'Outros'],
+        'categorias': [],
     }
     if request.method == 'POST':
         form = InscricaoForm(request.POST)
