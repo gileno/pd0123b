@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'eventos',
     'rest_api',
 ]
@@ -80,7 +82,7 @@ WSGI_APPLICATION = 'ultima.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'banco.sqlite3',
     }
 }
 
@@ -118,4 +120,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DATE_INPUT_FORMATS': ["%d/%m/%Y"],
     'DATE_FORMAT': '%d/%m/%Y',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }

@@ -8,6 +8,7 @@ from rest_framework import viewsets
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
 
 from eventos.models import Categoria, Evento
 
@@ -50,18 +51,24 @@ def categorias(request):
             'resultados': serializer.data
         })
 
-# Listagem de Categorias - GET (filtros) /api/categorias/
-# Criar Categorias - POST /api/categorias/
-# Visualizar uma Categoria - GET <id> /api/categorias/1/
-# Atualizar uma Categoria - PUT<completa>/PATCH<parcial> <id> /api/categorias/1/
-# Apagar uma Categoria - DELETE <id> /api/categorias/1/
-# Listagem de eventos de uma categoria - GET /api/categorias/1/eventos/
+# Listagem de Categorias - GET (filtros) /api/categorias/ - list
+# Criar Categorias - POST /api/categorias/ - create
+# Visualizar uma Categoria - GET <id> /api/categorias/1/ - retrieve
+# Atualizar uma Categoria - PUT<completa>/PATCH<parcial> <id> /api/categorias/1/ - update / update_partial
+# Apagar uma Categoria - DELETE <id> /api/categorias/1/ - destroy
+# Listagem de eventos de uma categoria - GET /api/categorias/1/eventos/ - eventos
 
 # class CategoriaModelViewSet(ModelViewSet)
 class CategoriaModelViewSet(viewsets.ModelViewSet):
 
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_permissions(self):
+        if self.action in ['destroy', 'update', 'partial_update', 'create']:
+            return [IsAdminUser()]
+        return [AllowAny()]
 
     @action(detail=True, methods=['GET'])
     def eventos(self, request, pk):
@@ -76,6 +83,13 @@ class EventoModelViewSet(viewsets.ModelViewSet):
 
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_fields = ['categoria', 'destaque']
+
+    def get_permissions(self):
+        if self.action in ['destroy', 'update', 'partial_update', 'create']:
+            return [IsAdminUser()]
+        return [AllowAny()]
 
     @action(detail=False, methods=['GET'])
     def destaques(self, request):

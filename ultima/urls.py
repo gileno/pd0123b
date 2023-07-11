@@ -9,5 +9,6 @@ urlpatterns = [
     path('categorias/<int:id>/', categoria, name='categoria'),
     path('inscricao/', inscricao, name='inscricao'),
     path('api/', include('rest_api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
 ]
